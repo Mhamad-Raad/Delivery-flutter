@@ -1,6 +1,6 @@
 {
-    "name": "delivery_app",
-    "short_name": "delivery_app",
+    "name": "delivery_app_sh",
+    "short_name": "delivery_app_sh",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

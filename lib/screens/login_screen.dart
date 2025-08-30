@@ -30,9 +30,9 @@ class _LoginScreenState extends State<LoginScreen> {
         password: _password.text,
       );
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Signed in')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Signed in')));
       // TODO: Navigator.pushReplacement(...) to your Home screen
     } on FirebaseAuthException catch (e) {
       final msg = _friendlyError(e);
@@ -45,9 +45,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _resetPassword() async {
     final email = _email.text.trim();
     if (email.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter your email first')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Enter your email first')));
       return;
     }
     try {
@@ -56,9 +56,9 @@ class _LoginScreenState extends State<LoginScreen> {
         const SnackBar(content: Text('Password reset email sent')),
       );
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_friendlyError(e))),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(_friendlyError(e))));
     }
   }
 
@@ -91,8 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   const FlutterLogo(size: 72),
                   const SizedBox(height: 16),
-                  Text('Sign in',
-                      style: Theme.of(context).textTheme.headlineSmall),
+                  Text(
+                    'Sign in',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
                   const SizedBox(height: 24),
                   Form(
                     key: _formKey,
@@ -108,8 +110,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           validator: (v) {
                             if (v == null || v.trim().isEmpty)
                               return 'Email is required';
-                            final ok = RegExp(r'^[^@]+@[^@]+\.[^@]+$')
-                                .hasMatch(v.trim());
+                            final ok = RegExp(
+                              r'^[^@]+@[^@]+\.[^@]+$',
+                            ).hasMatch(v.trim());
                             return ok ? null : 'Enter a valid email';
                           },
                         ),
@@ -122,9 +125,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             border: const OutlineInputBorder(),
                             suffixIcon: IconButton(
                               onPressed: () => setState(() => _hide = !_hide),
-                              icon: Icon(_hide
-                                  ? Icons.visibility
-                                  : Icons.visibility_off),
+                              icon: Icon(
+                                _hide ? Icons.visibility : Icons.visibility_off,
+                              ),
                             ),
                           ),
                           validator: (v) => (v == null || v.length < 6)
@@ -141,7 +144,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     height: 18,
                                     width: 18,
                                     child: CircularProgressIndicator(
-                                        strokeWidth: 2))
+                                      strokeWidth: 2,
+                                    ),
+                                  )
                                 : const Text('Sign in'),
                           ),
                         ),
@@ -162,18 +167,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                   try {
                                     await FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
-                                      email: _email.text.trim(),
-                                      password: _password.text,
-                                    );
+                                          email: _email.text.trim(),
+                                          password: _password.text,
+                                        );
                                     if (!mounted) return;
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                          content: Text('Account created')),
+                                        content: Text('Account created'),
+                                      ),
                                     );
                                   } on FirebaseAuthException catch (e) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                          content: Text(_friendlyError(e))),
+                                        content: Text(_friendlyError(e)),
+                                      ),
                                     );
                                   } finally {
                                     if (mounted) setState(() => _busy = false);
